@@ -69,7 +69,7 @@ The script performs the following tasks:
     chmod +x fivem_admin_setup.sh
     ```
 
-3. **Run the Script**: Execute the script with sudo privileges:
+3. **Run the Script**: Execute the script as root:
 
     ```bash
     ./fivem_admin_setup.sh
