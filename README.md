@@ -72,7 +72,7 @@ The script performs the following tasks:
 3. **Run the Script**: Execute the script with sudo privileges:
 
     ```bash
-    sudo ./fivem_admin_setup.sh
+    ./fivem_admin_setup.sh
     ```
 
 4. **Follow the Prompts**: The script will prompt you to enter a username for the Fivem server admin. Provide the desired username when prompted.
