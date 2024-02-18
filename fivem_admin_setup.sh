@@ -8,8 +8,15 @@ exit_with_error() {
 
 # Function to install required dependencies
 install_dependencies() {
+    echo "Checking if 'apt update' is needed..."
+    # Check if any index files are older than 24 hours (1440 minutes)
+    if find /var/lib/apt/lists -type f -mmin +1440 | grep -q .; then
+        echo "Package lists are outdated. Updating..."
+        apt update || exit_with_error "Failed to update package lists."
+    else
+        echo "Package lists are up to date. Skipping update."
+    fi
     echo "Installing required dependencies..."
-    apt update || exit_with_error "Failed to update package lists."
     apt install -y sudo git unzip curl wget xz-utils || exit_with_error "Failed to install dependencies."
     echo "Dependencies installed successfully."
 }
@@ -32,6 +39,21 @@ create_fivem_user() {
     su - "$fivem_username" || exit_with_error "Failed to log in as user $fivem_username."
 }
 
-# Execute the main function
-install_dependencies
-create_fivem_user
+# Main menu for user selection
+echo "Select an option:"
+echo "1) Install dependencies"
+echo "2) Create Fivem Server user"
+read -p "Enter choice [1-2]: " choice
+
+case $choice in
+    1)
+        install_dependencies
+        ;;
+    2)
+        create_fivem_user
+        ;;
+    *)
+        echo "Invalid selection. Exiting..."
+        exit 1
+        ;;
+esac
