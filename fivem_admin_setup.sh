@@ -9,8 +9,8 @@ exit_with_error() {
 # Function to install required dependencies
 install_dependencies() {
     echo "Installing required dependencies..."
-    sudo apt update || exit_with_error "Failed to update package lists."
-    sudo apt install -y sudo git unzip curl wget xz-utils || exit_with_error "Failed to install dependencies."
+    apt update || exit_with_error "Failed to update package lists."
+    apt install -y sudo git unzip curl wget xz-utils || exit_with_error "Failed to install dependencies."
     echo "Dependencies installed successfully."
 }
 
