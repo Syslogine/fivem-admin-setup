@@ -7,6 +7,12 @@ SERVER_MANAGER_REPO="https://github.com/Syslogine/fivem-server-manager.git"
 # Dependencies to install
 DEPENDENCIES="sudo git unzip curl wget xz-utils"
 
+# Check if the script is run as root
+if [ "$(id -u)" -ne 0 ]; then
+    echo "This script must be run as root. Exiting..."
+    exit 1
+fi
+
 # Function to log messages
 log_message() {
     echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" | tee -a "$LOG_FILE"
