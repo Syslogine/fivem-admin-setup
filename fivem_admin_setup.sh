@@ -1,45 +1,60 @@
 #!/bin/bash
 
-# Function to display error message and exit
+# Configuration Variables
+CONFIG_FILE="./fivem_server_setup.config"
+LOG_FILE="./fivem_server_setup.log"
+SERVER_MANAGER_REPO="https://github.com/Syslogine/fivem-server-manager.git"
+
+# Function to log messages
+log_message() {
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" | tee -a "$LOG_FILE"
+}
+
+# Function to display error message, log it, and exit
 exit_with_error() {
-    echo "$1 Exiting..."
+    log_message "ERROR: $1"
+    echo "Exiting..."
     exit 1
 }
 
-# Function to install required dependencies
+# Function to check and install required dependencies
 install_dependencies() {
-    echo "Checking if 'apt update' is needed..."
-    # Check if any index files are older than 24 hours (1440 minutes)
-    if find /var/lib/apt/lists -type f -mmin +1440 | grep -q .; then
-        echo "Package lists are outdated. Updating..."
-        apt update || exit_with_error "Failed to update package lists."
-    else
-        echo "Package lists are up to date. Skipping update."
-    fi
-    echo "Installing required dependencies..."
-    apt install -y sudo git unzip curl wget xz-utils || exit_with_error "Failed to install dependencies."
-    echo "Dependencies installed successfully."
+    log_message "Checking and installing required dependencies..."
+    while IFS= read -r line; do
+        if dpkg -l | grep -qw "$line"; then
+            log_message "$line is already installed. Skipping..."
+        else
+            log_message "Installing $line..."
+            apt-get install -y "$line" || exit_with_error "Failed to install $line."
+        fi
+    done < "$CONFIG_FILE"
+    log_message "All dependencies installed successfully."
 }
 
-# Function to create Fivem user
+# Function to create Fivem user and setup server management script
 create_fivem_user() {
     read -p "Enter the desired username for the Fivem Server: " fivem_username
     [[ -z "${fivem_username// }" ]] && exit_with_error "Username cannot be empty."
-    echo "Creating a dedicated user '$fivem_username' for the Fivem Server..."
-    adduser "$fivem_username" || exit_with_error "Failed to create Fivem user."
-    usermod -aG sudo "$fivem_username" || exit_with_error "Failed to grant sudo privileges to user $fivem_username."
-    echo "Sudo privileges granted to user $fivem_username."
-    echo "Cloning the server management script..."
-    git clone https://github.com/Syslogine/fivem-server-manager.git "/home/$fivem_username/fivem-server-manager" || exit_with_error "Failed to clone server management script."
+    log_message "Creating a dedicated user '$fivem_username' for the Fivem Server..."
+    adduser "$fivem_username" --gecos "" --disabled-password || exit_with_error "Failed to create Fivem user."
+    echo "$fivem_username ALL=(ALL) NOPASSWD:ALL" | tee -a /etc/sudoers
+    log_message "User $fivem_username created and granted sudo privileges without password."
+
+    # Cloning the server management script
+    log_message "Cloning the server management script..."
+    git clone "$SERVER_MANAGER_REPO" "/home/$fivem_username/fivem-server-manager" || exit_with_error "Failed to clone server management script."
     chown -R "$fivem_username:$fivem_username" "/home/$fivem_username/fivem-server-manager" || exit_with_error "Failed to set ownership of cloned directory."
-    echo "Server management script cloned and ownership set for user $fivem_username."
-    echo "Granting execute permissions to the script..."
+    log_message "Server management script cloned and ownership set for user $fivem_username."
+
+    # Granting execute permissions to the script
+    log_message "Granting execute permissions to the server management script..."
     chmod +x "/home/$fivem_username/fivem-server-manager/fivemanager.sh" || exit_with_error "Failed to grant execute permissions to server management script."
-    echo "Logging in as user $fivem_username..."
-    su - "$fivem_username" || exit_with_error "Failed to log in as user $fivem_username."
+
+    log_message "Setup for user $fivem_username completed. Please manually log in as user $fivem_username to proceed."
 }
 
 # Main menu for user selection
+log_message "Script started."
 echo "Select an option:"
 echo "1) Install dependencies"
 echo "2) Create Fivem Server user"
@@ -53,7 +68,10 @@ case $choice in
         create_fivem_user
         ;;
     *)
+        log_message "Invalid selection."
         echo "Invalid selection. Exiting..."
         exit 1
         ;;
 esac
+
+log_message "Script completed."
