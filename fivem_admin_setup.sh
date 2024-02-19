@@ -1,9 +1,11 @@
 #!/bin/bash
 
 # Configuration Variables
-CONFIG_FILE="./fivem_server_setup.config"
 LOG_FILE="./fivem_server_setup.log"
 SERVER_MANAGER_REPO="https://github.com/Syslogine/fivem-server-manager.git"
+
+# Dependencies to install
+DEPENDENCIES="sudo git unzip curl wget xz-utils"
 
 # Function to log messages
 log_message() {
@@ -20,14 +22,14 @@ exit_with_error() {
 # Function to check and install required dependencies
 install_dependencies() {
     log_message "Checking and installing required dependencies..."
-    while IFS= read -r line; do
-        if dpkg -l | grep -qw "$line"; then
-            log_message "$line is already installed. Skipping..."
+    for package in $DEPENDENCIES; do
+        if dpkg -l | grep -qw "$package"; then
+            log_message "$package is already installed. Skipping..."
         else
-            log_message "Installing $line..."
-            apt-get install -y "$line" || exit_with_error "Failed to install $line."
+            log_message "Installing $package..."
+            apt-get install -y "$package" || exit_with_error "Failed to install $package."
         fi
-    done < "$CONFIG_FILE"
+    done
     log_message "All dependencies installed successfully."
 }
 
