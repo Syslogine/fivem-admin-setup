@@ -1,104 +1,74 @@
-# Fivem Admin Setup
+# Fivem Server Admin Setup Guide
 
-This script automates the setup of a Fivem server admin environment on a Debian-based system.
+Automate the setup of your Fivem server admin environment on Debian-based Linux systems with our comprehensive script. This guide outlines the steps to prepare your system, ensuring a smooth and efficient setup process.
 
 ## Overview
 
-The script performs the following tasks:
-
-- Installs required dependencies.
-- Creates a dedicated user for Fivem server administration.
-- Clones a server management script from a GitHub repository.
-- Grants execute permissions to the server management script.
-- Logs in as the newly created admin user.
+This setup script automates the following tasks:
+- Installs necessary dependencies for the Fivem server.
+- Creates a dedicated user account for server administration.
+- Clones a server management script from a specified GitHub repository.
+- Sets execute permissions for the server management script.
+- Switches to the newly created admin user for immediate server management.
 
 ## Prerequisites
 
-- This script is designed for use on Debian-based systems.
-- You should have root access to run the script. If you're not logged in as root, you can use the `su -` command to switch to the root user before executing the script. Ensure that you have an active internet connection to install dependencies and clone the server management script from GitHub.
+- **Root Access**: Ensure you have root access to your system. Use `su -` to switch to the root user if necessary.
+- **Internet Connection**: A stable internet connection is required to download dependencies and clone scripts from GitHub.
+- **Debian-based Linux Distribution**: This script is designed for Debian-based systems, including Ubuntu.
 
+## Installation
 
-## Usage
+### Quick Start
 
-1. **Download the Script**: If you have `git` installed, you can clone the repository using the following command:
-
+1. **Clone the Repository**:
     ```bash
-    git clone https://github.com/Syslogine/fivem-admin-setup.git
+    git clone https://github.com/Syslogine/fivem-admin-setup.git && cd fivem-admin-setup
     ```
 
-    Alternatively, you can create the script manually. Here are a few ways to do it:
-
-    - **Using nano Text Editor**: Nano is a simple text editor available on most Unix-like systems. You can create the script using the following command:
-
-        ```bash
-        nano fivem_admin_setup.sh
-        ```
-
-        This command will open the nano text editor. Copy the script content from the GitHub repository and paste it into the nano editor. To save the file, press `Ctrl + O`, then press `Enter`. To exit nano, press `Ctrl + X`.
-
-    - **Using Vi or Vim Text Editor**: Vi and Vim are powerful text editors available on Unix-like systems. You can create the script using the following command:
-
-        ```bash
-        vi fivem_admin_setup.sh
-        ```
-
-        This command will open the Vi or Vim text editor. Press `i` to enter insert mode, then copy the script content from the GitHub repository and paste it into the editor. To save the file and exit, press `Esc` to exit insert mode, then type `:wq` and press `Enter`.
-
-    - **Using a Graphical Text Editor**: If you're using a graphical user interface (GUI), you can use any text editor of your choice, such as Gedit, Kate, or Sublime Text. Simply open the text editor, create a new file named `fivem_admin_setup.sh`, copy the script content from the GitHub repository, and save the file.
-
-    - **Using wget or curl**: If you're comfortable with downloading files directly from the internet, you can use `wget` or `curl` to fetch the script:
-
-        ```bash
-        wget https://raw.githubusercontent.com/Syslogine/fivem-admin-setup/main/fivem_admin_setup.sh
-        ```
-
-        or
-
-        ```bash
-        curl -O https://raw.githubusercontent.com/Syslogine/fivem-admin-setup/main/fivem_admin_setup.sh
-        ```
-
-        This will download the script file directly to your current directory.
-
-    Choose the method that best suits your preferences and system setup.
-
-
-2. **Make the Script Executable**: Run the following command to make the script executable:
-
+2. **Make the Script Executable**:
     ```bash
     chmod +x fivem_admin_setup.sh
     ```
 
-3. **Run the Script**: Execute the script as root:
-
+3. **Execute the Script**:
     ```bash
     ./fivem_admin_setup.sh
     ```
 
-4. **Follow the Prompts**: The script will prompt you to enter a username for the Fivem server admin. Provide the desired username when prompted.
+### Detailed Instructions
 
-5. **Script Execution**: The script will then proceed to:
+If you prefer manual setup or lack `git`, follow these detailed instructions:
 
-    - Install required dependencies (sudo, git, unzip, curl, wget, xz-utils).
-    - Create the specified user for Fivem server administration and grant sudo privileges.
-    - Clone the server management script from GitHub.
-    - Grant execute permissions to the server management script.
-    - Log in as the newly created admin user.
+- **Text Editor Method**: Use `nano` or `vim` to create and edit the script file.
+    - Nano: `nano fivem_admin_setup.sh`
+    - Vim: `vim fivem_admin_setup.sh`
+    Copy and paste the script content, save, and exit the editor.
 
-6. **Post-Installation**: After the script execution, you will be logged in as the newly created admin user. You can proceed with further configuration or management tasks for your Fivem server.
+- **Direct Download**: Use `wget` or `curl` to download the script directly.
+    - wget: `wget https://raw.githubusercontent.com/Syslogine/fivem-admin-setup/main/fivem_admin_setup.sh`
+    - curl: `curl -O https://raw.githubusercontent.com/Syslogine/fivem-admin-setup/main/fivem_admin_setup.sh`
 
-## Notes
+After creating or downloading the script, ensure it is executable with `chmod +x fivem_admin_setup.sh` and run it with `./fivem_admin_setup.sh`.
 
-- Ensure that you review and understand the script before executing it, especially if you're running it on a production system.
-- The script assumes that the server management script is available at the specified GitHub repository.
-- You can customize the server management script URL or adjust any other parameters to fit your specific requirements.
+## Usage
 
-## Script Source
+Follow the script's prompts to enter the desired username for the Fivem server admin. The script will then automatically:
+- Install dependencies (`sudo`, `git`, `unzip`, `curl`, `wget`, `xz-utils`).
+- Create and configure the admin user account.
+- Clone and set up the server management script for immediate use.
 
-You can find the script on GitHub: [fivem_admin_setup.sh](https://github.com/Syslogine/fivem-admin-setup/blob/main/fivem_admin_setup.sh)
+Upon completion, you'll be ready to manage your Fivem server with the newly created admin account.
+
+## Important Notes
+
+- Review the script before running to ensure it meets your system's needs.
+- The script and server management script are located in the specified GitHub repository. Adjustments can be made to suit your specific setup requirements.
+
+## Resources
+
+- **Script Source**: Access the setup script via GitHub at [fivem_admin_setup.sh](https://github.com/Syslogine/fivem-admin-setup/blob/main/fivem_admin_setup.sh).
 
 ## Conclusion
 
-This script simplifies the setup process for managing a Fivem server by automating the installation of dependencies and admin user creation. It provides a convenient way to prepare your server environment for Fivem server administration.
-
-Feel free to modify the script according to your needs or contribute improvements if you find it useful!
+This guide provides a streamlined process to set up your Fivem server admin environment, automating routine tasks for a hassle-free server management experience. Customize the script as needed to fit your specific server configuration.
