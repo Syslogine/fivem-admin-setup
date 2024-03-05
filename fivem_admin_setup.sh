@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
 # Configuration Variables
 LOG_FILE="./fivem_server_setup.log"
